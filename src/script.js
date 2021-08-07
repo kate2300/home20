@@ -17,9 +17,19 @@ class Search {
         this.input = document.querySelector('#search')
 
         this.result = new Results()
+        this.button = new Button(this.input)
     }
     init() {
         this.input.addEventListener('input', () => {
+            if (!this.input.value) {
+                this.button.disableButton(true)
+            } else {
+                this.button.disableButton(false)
+            }
+
+            if (items.includes(this.input.value)) {
+                this.button.disableButton(true)
+            }
             this.sortArray(this.input.value)
         })
 
@@ -49,6 +59,27 @@ class Results {
             li.textContent = arr[i]
             this.ul.append(li)
         }
+    }
+
+}
+
+class Button {
+    constructor(inputRef) {
+        this.button = document.createElement('button')
+
+        this.button.addEventListener('click', () => {
+            items.push(inputRef.value)
+            console.log(items)
+            inputRef.value = ''
+            this.button.disabled = true
+        })
+        this.wrapper = document.querySelector(".wrapper")
+        this.wrapper.append(this.button)
+        this.button.disabled = true
+
+    }
+    disableButton(state) {
+        this.button.disabled = state
     }
 
 }
